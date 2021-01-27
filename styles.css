@@ -1,0 +1,89 @@
+.app {
+  height: 100vh;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-grow {
+  display: flex;
+  flex-grow: 1;
+}
+
+.content {
+  margin: 0px 20px;
+}
+
+.asset {
+  max-width: 40%;
+  max-height: 40%;
+}
+
+.sidebar {
+  display: flex;
+  height: 100vh;
+  border-right: 1px solid #e8e8e8;
+  width: 300px;
+  min-width: 300px;
+}
+
+.text {
+  background-color: #ececec;
+  padding: 30px;
+  font-size: 20px;
+  overflow: auto;
+  font-style: italic;
+}
+
+.navbar {
+  padding: 10px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.btn {
+  background-color: aqua
+}
+
+.btn:visited {
+  background-color: yellow
+}
+
+.btn:hover {
+  background-color: skyblue
+}
+
+.btn:active {
+  background-color: pink;
+}
+
+.btn:focus {
+  background-color: pink;
+}
+
+#questions {
+  padding: 10px;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.label {
+  color: #717171;
+}
+
+.question {
+  margin-bottom: 15px;
+}
+
+[type="radio"]:checked+span:after, [type="radio"].with-gap:checked+span:before, [type="radio"].with-gap:checked+span:after {
+  border-color: #03a9f4 !important;
+}
+
+[type="checkbox"].filled-in:checked+span:not(.lever):after {
+  border-color: #03a9f4 !important;
+  background-color: #03a9f4 !important;
+}
+
+input.materialize-textarea:focus:not([readonly]) {
+  border-color: #03a9f4 !important;
+}
