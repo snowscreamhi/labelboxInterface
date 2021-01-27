@@ -1,0 +1,390 @@
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+/>
+<link
+  href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  rel="stylesheet"
+/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="https://api.labelbox.com/static/labeling-api.js"></script>
+<link rel="stylesheet" href="styles.css" />
+
+<div class="app flex-grow">
+  <div class="flex-column sidebar">
+    <div class="navbar">
+      <i
+        class="material-icons"
+        style="color: #9b9b9b; cursor: pointer;"
+        onclick="goHome()"
+        >home</i
+      >
+    </div>
+
+    <div id="questions"></div>
+
+    <div class="flex-grow"></div>
+    <div style="display: flex;">
+      <a
+        class="waves-effect waves-light btn-large"
+        style="background-color: white; color: black; width: 100%;"
+        onclick="skip()"
+        >Skip</a
+      >
+      <a
+        class="waves-effect waves-light btn-large"
+        style="background-color: #03a9f4; width: 100%;"
+        onclick="submit()"
+        >Submit</a
+      >
+    </div>
+  </div>
+
+  <div class="flex-grow flex-column content">
+    <div style="display: flex; align-items: center; padding: 10px 0px">
+      <i
+        id="back"
+        class="material-icons"
+        style="color: #9b9b9b; margin-left: -5px; opacity: 0.2;"
+        onclick="goBack()"
+        >keyboard_arrow_left</i
+      >
+      <div style="color: #717171; padding: 0px 10px;" id="externalid">
+        Label this asset
+      </div>
+      <i
+        id="next"
+        class="material-icons"
+        style="color: #9b9b9b; margin-left: -5px; opacity: 0.2;"
+        onclick="goNext()"
+        >keyboard_arrow_right</i
+      >
+    </div>
+    <div id="asset">loading...</div>
+  </div>
+</div>
+
+<script>
+  let state = {
+    projectId: new URL(window.location.href).searchParams.get("project"),
+    currentAsset: undefined
+  };
+  const defaultConfiguration = {
+    classifications: [
+      {
+        name: "model",
+        instructions: "Select the car model",
+        type: "radio",
+        options: [
+          {
+            value: "model_s",
+            label: "Tesla Model S"
+          },
+          {
+            value: "model_3",
+            label: "Tesla Model 3"
+          },
+          {
+            value: "model_x",
+            label: "Tesla Model X"
+          }
+        ]
+      },
+      {
+        name: "image_problems",
+        instructions: "Select all that apply",
+        type: "checklist",
+        options: [
+          {
+            value: "blur",
+            label: "Blurry"
+          },
+          {
+            value: "saturated",
+            label: "Over Saturated"
+          },
+          {
+            value: "pixelated",
+            label: "Pixelated"
+          }
+        ]
+      },
+      {
+        name: "description",
+        instructions: "Describe this image",
+        type: "text"
+      }
+    ]
+  };
+
+  function createOptionQuestion({ type, name, options, instructions }, answer) {
+    const createOption = ({ value, label }) => {
+      return `
+      <p value=${value}>
+        <label>
+          ${
+            type == "radio"
+              ? `<input class="with-gap" type="radio" name="group-${name}" valuetosubmit="${value}" ${
+                  answer === value ? "checked" : ""
+                } />`
+              : `<input type="checkbox" class="filled-in" valuetosubmit="${value}" ${
+                  (answer || []).indexOf(value) !== -1 ? "checked" : ""
+                } />`
+          }
+          <span>${label}</span>
+        </label>
+      </p>
+    `;
+    };
+    return `
+    <div class="question" id="${name}" questiontype="${type}">
+      <div class="label">${instructions}</div>
+      <form action="#">
+        ${options.map(createOption).join("")}
+      </form>
+    </div>
+  `;
+  }
+
+  function createTextInput({ id, label }, answer) {
+    return `
+    <div class="question" id="${id}" questiontype="text">
+      <div class="input-field col s12">
+        <div class="label">${label}</div>
+        <input class="materialize-textarea" data-length="120" value="${answer ||
+          ""}"></input>
+      </div>
+    </div>
+  `;
+  }
+
+  function createQuestion(question, answers) {
+    const optionalAnswer = (answers || {})[question.name];
+    if (question.type === "text") {
+      return createTextInput(
+        {
+          id: question.name,
+          label: question.instructions
+        },
+        optionalAnswer
+      );
+    }
+
+    if (question.type === "radio" || question.type === "checklist") {
+      return createOptionQuestion(question, optionalAnswer);
+    }
+
+    console.log("Unknown question type", question);
+  }
+
+  let classifications = [];
+  let markQuestionsAsLoaded;
+  new Promise(resolve => {
+    markQuestionsAsLoaded = resolve;
+  }).then(() => {
+    Labelbox.currentAsset().subscribe(asset => {
+      if (asset) {
+        drawAsset(asset);
+      }
+    });
+  });
+
+  function drawQuestions(classifications, answers) {
+    if (answers && answers.chosenVideoId) {
+      document.querySelector("#chose-" + answers.chosenVideoId).checked = true;
+    }
+
+    document.querySelector("#questions").innerHTML = classifications
+      .map(classification => createQuestion(classification, answers))
+      .join("");
+  }
+
+  Labelbox.getTemplateCustomization().subscribe(customization => {
+    classifications =
+      (customization && customization.classifications) ||
+      defaultConfiguration.classifications;
+    drawQuestions(classifications);
+    markQuestionsAsLoaded();
+  });
+
+  function goHome() {
+    window.location.href =
+      "https://app.labelbox.com/projects/" + state.projectId;
+  }
+
+  function skip() {
+    Labelbox.skip().then(() => {
+      Labelbox.fetchNextAssetToLabel();
+    });
+  }
+
+  function getChosenVideoId() {
+    if (document.querySelector("#chose-" + state.leftVideoId).checked) {
+      return state.leftVideoId;
+    }
+
+    if (document.querySelector("#chose-" + state.rightVideoId).checked) {
+      return state.rightVideoId;
+    }
+
+    return;
+  }
+
+  function getLabel() {
+    const chosenVideoId = getChosenVideoId();
+    const getAnswer = node => {
+      const key = node.getAttribute("id");
+      const type = node.getAttribute("questiontype");
+      if (type === "text") {
+        return {
+          [key]: node.querySelector("input").value
+        };
+      }
+
+      if (type === "radio") {
+        const inputs = Array.from(node.querySelectorAll("input"));
+        const selected = inputs.find(child => child.checked);
+        return {
+          [key]: selected && selected.getAttribute("valuetosubmit")
+        };
+      }
+
+      if (type === "checklist") {
+        const inputs = Array.from(node.querySelectorAll("input"));
+        const value = inputs
+          .filter(child => child.checked)
+          .map(child => child.getAttribute("valuetosubmit"));
+        return {
+          [key]: value
+        };
+      }
+
+      console.log("Unable to find type for", node);
+    };
+
+    const answers = Array.from(
+      document.querySelector("#questions").children
+    ).map(getAnswer);
+
+    return Object.assign({ chosenVideoId }, ...answers);
+  }
+
+  function submit() {
+    const label = JSON.stringify(getLabel());
+    const jumpToNext = Boolean(!state.currentAsset.label);
+    // Progress is this asset is new
+    Labelbox.setLabelForAsset(label).then(() => {
+      if (jumpToNext) {
+        Labelbox.fetchNextAssetToLabel();
+      }
+    });
+    if (jumpToNext) {
+      document.querySelector("#asset").innerHTML = "loading...";
+    }
+  }
+
+  function goBack() {
+    if (state.currentAsset.previous) {
+      Labelbox.setLabelAsCurrentAsset(state.currentAsset.previous);
+    }
+  }
+
+  function goNext() {
+    if (state.currentAsset.next) {
+      Labelbox.setLabelAsCurrentAsset(state.currentAsset.next);
+    } else {
+      Labelbox.fetchNextAssetToLabel();
+    }
+  }
+
+  function getHtmlForAsset({ leftVideo, rightVideo }) {
+    return `
+      <div style="display: flex; flex-direction: column;">
+        <div style="font-size: 25px; margin: 10px;">Instructions: Select a preferred video...</div>
+        <div style="display: flex; flex-direction: row; justify-content: space-around;">
+          <video class="asset" src="${
+            leftVideo.url
+          }" controls style="flex: 47" id="${leftVideo.id}"></video>
+          <video class="asset" src="${
+            rightVideo.url
+          }" controls style="flex: 47" id="${rightVideo.id}"></video>
+        </div>
+        <div style="display: flex; flex-direction: row;">
+          <label style="display: flex; justify-content: center; flex: 47">
+            <input class="with-gap" type="radio" name="group-video-compare" id="chose-${
+              leftVideo.id
+            }" />
+            <span style="font-size: 20px; margin-top: 20px;">Video A</span>
+          </label>
+          <label style="display: flex; justify-content: center; flex: 47">
+            <input class="with-gap" type="radio" name="group-video-compare" id="chose-${
+              rightVideo.id
+            }" />
+            <span style="font-size: 20px; margin-top: 20px;">Video B</span>
+          </label>
+        </div>
+      </div>
+    `;
+  }
+
+  function getVideos(data) {
+    try {
+      const {
+        compare: { a, b }
+      } = JSON.parse(data);
+      if (!a.id || !a.url || !b.id || !b.url) {
+        throw new Error(
+          "both a and b must have an id that is used in the label"
+        );
+      }
+      return {
+        leftVideo: a,
+        rightVideo: b
+      };
+    } catch (e) {
+      console.log(e);
+      alert(
+        "DataRow format does not match this template. Please see the chrome console for more information"
+      );
+      throw new Error(
+        `Please see the example dataset. DataRows must match this format "{\"compare\":{\"a\":{\"id\":\"your-db-id-89E30C47-5807-5622-AA3D-D390AFE53728\",\"url\":\"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4\"},\"b\":{\"id\":\"your-db-id-0D10F70F-F865-A5B0-A548-7CB0176324AF\",\"url\":\"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4\"}}}". Not ${data}`
+      );
+    }
+  }
+
+  function drawAsset(asset) {
+    const backButton = document.querySelector("#back");
+    backButton.style.opacity = asset.previous ? 1 : 0.2;
+    backButton.style.cursor = asset.previous ? "pointer" : "inherit";
+    const hasNext = Boolean(asset.next || asset.label);
+    const nextButton = document.querySelector("#next");
+    nextButton.style.opacity = hasNext ? 1 : 0.2;
+    nextButton.style.cursor = hasNext ? "pointer" : "inherit";
+
+    const { leftVideo, rightVideo } = getVideos(asset.data);
+    if ((state.currentAsset && state.currentAsset.data) !== asset.data) {
+      document.querySelector("#asset").innerHTML = getHtmlForAsset({
+        leftVideo,
+        rightVideo
+      });
+    }
+    if ((state.currentAsset && state.currentAsset.id) !== asset.id) {
+      if (asset.label) {
+        try {
+          const label = JSON.parse(asset.label);
+          drawQuestions(classifications, label);
+        } catch (e) {
+          console.log("failed to read label", e);
+        }
+      } else {
+        drawQuestions(classifications);
+      }
+    }
+    state = {
+      ...state,
+      currentAsset: asset,
+      leftVideoId: leftVideo.id,
+      rightVideoId: rightVideo.id
+    };
+  }
+</script>
