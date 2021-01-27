@@ -1,0 +1,20 @@
+[
+  {
+    "data": "{\"compare\":{\"a\":{\"id\":\"your-db-id-89E30C47-5807-5622-AA3D-D390AFE53728\",\"url\":\"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4\"},\"b\":{\"id\":\"your-db-id-0D10F70F-F865-A5B0-A548-7CB0176324AF\",\"url\":\"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4\"}}}"
+  },
+  {
+    "data": "{\"compare\":{\"a\":{\"id\":\"your-db-id-C9758D0E-EFA0-82CD-2481-223E1FC7D965\",\"url\":\"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4\"},\"b\":{\"id\":\"your-db-id-F55230D4-A9B9-0E87-6317-330523FB29B7\",\"url\":\"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4\"}}}"
+  },
+  {
+    "data": "{\"compare\":{\"a\":{\"id\":\"your-db-id-305511E9-3B6D-9F5D-4657-2B5217C2BB28\",\"url\":\"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4\"},\"b\":{\"id\":\"your-db-id-76E6E351-5CEE-C2FF-B71A-B9A39B3C3B9F\",\"url\":\"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4\"}}}"
+  },
+  {
+    "data": "{\"compare\":{\"a\":{\"id\":\"your-db-id-1965E3F6-E8B6-6A48-826A-940A99946F25\",\"url\":\"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4\"},\"b\":{\"id\":\"your-db-id-87210FDF-059F-B4BC-D9E7-99AEBBAD705C\",\"url\":\"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4\"}}}"
+  },
+  {
+    "data": "{\"compare\":{\"a\":{\"id\":\"your-db-id-A642135B-902D-8040-6927-21422B19F735\",\"url\":\"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4\"},\"b\":{\"id\":\"your-db-id-8201326F-5EB1-7C10-0CA5-EEC6A1AE1623\",\"url\":\"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4\"}}}"
+  },
+  {
+    "data": "{\"compare\":{\"a\":{\"id\":\"your-db-id-9035CF45-70F9-2309-75D7-6FD416DC30B7\",\"url\":\"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4\"},\"b\":{\"id\":\"your-db-id-CB3BF039-B157-FA37-7C22-434AB6AC4D79\",\"url\":\"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WhatCarCanYouGetForAGrand.mp4\"}}}"
+  }
+]
