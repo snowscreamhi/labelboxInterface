@@ -72,25 +72,6 @@
   const defaultConfiguration = {
     classifications: [
       {
-        name: "model",
-        instructions: "Select the car model",
-        type: "radio",
-        options: [
-          {
-            value: "model_s",
-            label: "Tesla Model S"
-          },
-          {
-            value: "model_3",
-            label: "Tesla Model 3"
-          },
-          {
-            value: "model_x",
-            label: "Tesla Model X"
-          }
-        ]
-      },
-      {
         name: "image_problems",
         instructions: "Select all that apply",
         type: "checklist",
@@ -297,28 +278,28 @@
     }
   }
 
-  function getHtmlForAsset({ leftVideo, rightVideo }) {
+  function getHtmlForAsset({text_1, text_2, text_3}) {
     return `
       <div style="display: flex; flex-direction: column;">
-        <div style="font-size: 25px; margin: 10px;">Instructions: Select a preferred video...</div>
+        <div style="font-size: 25px; margin: 10px;">Instructions: Select whether text A is closer to text B or text C.</div>
         <div style="display: flex; flex-direction: row; justify-content: space-around;">
-          <video class="asset" src="${
-            leftVideo.url
-          }" controls style="flex: 47" id="${leftVideo.id}"></video>
-          <video class="asset" src="${
-            rightVideo.url
-          }" controls style="flex: 47" id="${rightVideo.id}"></video>
+          <span>"${
+            text_1.url
+          }" </span>
+          <span>${
+            text_2.url
+          }"</span>
         </div>
         <div style="display: flex; flex-direction: row;">
           <label style="display: flex; justify-content: center; flex: 47">
             <input class="with-gap" type="radio" name="group-video-compare" id="chose-${
-              leftVideo.id
+              text_1.id
             }" />
             <span style="font-size: 20px; margin-top: 20px;">Video A</span>
           </label>
           <label style="display: flex; justify-content: center; flex: 47">
             <input class="with-gap" type="radio" name="group-video-compare" id="chose-${
-              rightVideo.id
+              text_2.id
             }" />
             <span style="font-size: 20px; margin-top: 20px;">Video B</span>
           </label>
