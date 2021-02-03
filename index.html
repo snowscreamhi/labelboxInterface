@@ -282,7 +282,7 @@
     return `
       <div style="display: flex; flex-direction: column;">
         <div style="font-size: 25px; margin: 10px;">Instructions: Select whether text A is closer to text B or text C.</div>
-        <div style="display: flex; flex-direction: row; justify-content: space-around;">
+        <div style="display: flex; flex-direction: column; justify-content: space-around;">
           <span>"${
             leftVideo.url
           }" </span>
@@ -290,24 +290,10 @@
             rightVideo.url
           }" </span>
         </div>
-        <div style="display: flex; flex-direction: row;">
-          <label style="display: flex; justify-content: center; flex: 47">
-            <input class="with-gap" type="radio" name="group-video-compare" id="chose-${
-              leftVideo.id
-            }" />
-            <span style="font-size: 20px; margin-top: 20px;">Video A</span>
-          </label>
-          <label style="display: flex; justify-content: center; flex: 47">
-            <input class="with-gap" type="radio" name="group-video-compare" id="chose-${
-              rightVideo.id
-            }" />
-            <span style="font-size: 20px; margin-top: 20px;">Video B</span>
-          </label>
-        </div>
       </div>
     `;
   }
-
+ //rename to getTriplet: 
   function getVideos(data) {
     try {
       const {
@@ -322,6 +308,7 @@
         leftVideo: a,
         rightVideo: b
       };
+      // return {A: data.A, B: data.B, C: data.C}
     } catch (e) {
       console.log(e);
       alert(
@@ -342,7 +329,7 @@
     nextButton.style.opacity = hasNext ? 1 : 0.2;
     nextButton.style.cursor = hasNext ? "pointer" : "inherit";
 
-    const { leftVideo, rightVideo } = getVideos(asset.data);
+    const { leftVideo, rightVideo } = getVideos(asset.data); //<- change to "asset" (no .data)
     if ((state.currentAsset && state.currentAsset.data) !== asset.data) {
       document.querySelector("#asset").innerHTML = getHtmlForAsset({
         leftVideo,
