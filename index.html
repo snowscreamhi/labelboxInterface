@@ -278,17 +278,35 @@
     }
   }
 
-  function getHtmlForAsset({ leftVideo, rightVideo }) {
+  function getHtmlForAsset({A, B, C}) {
     return `
       <div style="display: flex; flex-direction: column;">
         <div style="font-size: 25px; margin: 10px;">Instructions: Select whether text A is closer to text B or text C.</div>
         <div style="display: flex; flex-direction: column; justify-content: space-around;">
-          <span>"${
-            leftVideo.url
-          }" </span>
-          <span>"${
-            rightVideo.url
-          }" </span>
+          <span><b>A:</b></span>
+          <div class="card">
+            <div class="container">
+              <span>"${
+                A
+              }" </span>
+            </div>
+          </div>
+          <span><b>B:</b></span>
+          <div class="card">
+            <div class="container">
+              <span>"${
+                B
+              }" </span>
+            </div>
+          </div>
+          <span><b>C:</b></span>
+          <div class="card">
+            <div class="container">
+              <span>"${
+                C
+              }" </span>
+            </div>
+          </div>
         </div>
       </div>
     `;
@@ -297,16 +315,17 @@
   function getVideos(data) {
     try {
       const {
-        compare: { a, b }
+        compare: {A, C, B}
       } = JSON.parse(data);
-      if (!a.id || !a.url || !b.id || !b.url) {
+      if (!A || !B || !C) {
         throw new Error(
           "both a and b must have an id that is used in the label"
         );
       }
       return {
-        leftVideo: a,
-        rightVideo: b
+        A: data.A,
+        B: data.B,
+        C: data.C
       };
       // return {A: data.A, B: data.B, C: data.C}
     } catch (e) {
@@ -329,11 +348,12 @@
     nextButton.style.opacity = hasNext ? 1 : 0.2;
     nextButton.style.cursor = hasNext ? "pointer" : "inherit";
 
-    const { leftVideo, rightVideo } = getVideos(asset.data); //<- change to "asset" (no .data)
+    const {A, B, C} = getVideos(asset.data); //<- change to "asset" (no .data)
     if ((state.currentAsset && state.currentAsset.data) !== asset.data) {
       document.querySelector("#asset").innerHTML = getHtmlForAsset({
-        leftVideo,
-        rightVideo
+        A,
+        B,
+        C
       });
     }
     if ((state.currentAsset && state.currentAsset.id) !== asset.id) {
@@ -351,8 +371,6 @@
     state = {
       ...state,
       currentAsset: asset,
-      leftVideoId: leftVideo.id,
-      rightVideoId: rightVideo.id
     };
   }
 </script>
