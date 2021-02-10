@@ -212,7 +212,7 @@
   }
 
   function getLabel() {
-    const chosenVideoId = getChosenVideoId();
+    
     const getAnswer = node => {
       const key = node.getAttribute("id");
       const type = node.getAttribute("questiontype");
@@ -247,7 +247,7 @@
       document.querySelector("#questions").children
     ).map(getAnswer);
 
-    return Object.assign({ chosenVideoId }, ...answers);
+    return answers;
   }
 
   function submit() {
