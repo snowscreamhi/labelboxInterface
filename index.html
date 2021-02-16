@@ -280,26 +280,26 @@
 
   function getHtmlForAsset({A, B, C}) {
     return `
-      <div style="display: flex; flex-direction: column;">
-        <div style="font-size: 25px; margin: 10px;">Instructions: Select whether text A is closer to text B or text C.</div>
+      <div style="display: flex; flex-direction: column; column-width: 20px; width: 750px">
+        <div style="font-size: 25px; margin: 10px;">Criteria: Sentiment (positive vs negative reviews)</div>
         <div style="display: flex; flex-direction: column; justify-content: space-around;">
           <span><b>A:</b></span>
           <div class="card">
-            <span>"${
+            <span>${
               A
-            }" </span>
+            } </span>
           </div>
           <span><b>B:</b></span>
           <div class="card">
-            <span>"${
+            <span>${
               B
-            }" </span>
+            } </span>
           </div>
           <span><b>C:</b></span>
           <div class="card">
-            <span>"${
+            <span>${
               C
-            }" </span>
+            } </span>
           </div>
         </div>
       </div>
