@@ -7,7 +7,6 @@
   transition: 0.3s;
   border-radius: 10px; /* 5px rounded corners */
   padding: 15px 15px;
-  column-width: 50px
 }
 
 /* On mouse-over, add a deeper shadow */
