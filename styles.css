@@ -24,14 +24,17 @@
   flex-direction: column;
   column-width: 300px;
   justify-content: space-around;
+  overflow: scroll;
 }
 
 .flex-grow {
+  margin-top: 0px;
   display: flex;
   flex-grow: 1;
 }
 
 .content {
+  margin-top: 0px;
   margin: 0px 20px;
 }
 

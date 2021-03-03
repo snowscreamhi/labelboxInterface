@@ -10,7 +10,7 @@
 <script src="https://api.labelbox.com/static/labeling-api.js"></script>
 <link rel="stylesheet" href="styles.css" />
 
-<div class="app flex-grow">
+<div class="flex-grow">
   <div class="flex-column sidebar">
     <div class="navbar">
       <i
@@ -41,7 +41,7 @@
   </div>
 
   <div class="flex-grow flex-column content">
-    <div style="display: flex; align-items: center; padding: 10px 0px">
+    <div style="display: flex; align-items: center; padding: 10px 0px; margin-top: 10px;">
       <i
         id="back"
         class="material-icons"
@@ -60,7 +60,9 @@
         >keyboard_arrow_right</i
       >
     </div>
-    <div id="asset">loading...</div>
+    <div style="display: flex; align-items: center; padding: 10px 0px; margin-bottom: auto">
+      <div id="asset">loading...</div>
+    </div>
   </div>
 </div>
 
@@ -280,7 +282,7 @@
 
   function getHtmlForAsset({A, B, C}) {
     return `
-      <div style="display: flex; flex-direction: column; justify-content: space-around; width: 750px">
+      <div style="display: flex; flex-direction: column; width: 750px">
         <div style="font-size: 25px; margin: 10px;">Criteria: Sentiment</div>
         <div style="display: flex; flex-direction: column; justify-content: space-around;">
           <span><b>A:</b></span>
