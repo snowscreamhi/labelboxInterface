@@ -1,9 +1,9 @@
-# labelboxInterface
+# Labelbox Interface
 
 Exposed link to index.html:
 http://labelbox-interface.snowscreamhi.vercel.app/
 
-### NOTE!
+### Note:
 You must update the Vercel project to reflect GitHub changes.
 https://vercel.com/snowscreamhi/labelbox-interface
 
