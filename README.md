@@ -16,6 +16,6 @@ This repository contains an exposed HTML and CSS file that Labelbox uses to show
 - https://github.com/Labelbox/Labelbox/tree/master/custom-interfaces
 - https://www.loom.com/share/97e20c8e3ab345ad996cc4c8f3b4cdae
 
-This repository also contains a Python Notebook that describes how to generate data compatible with this interface, as well as how to code other useful functions for Labelbox. This Python Notebook is meant to be run in Google Colab, but could probably easily be adapted to run on a local machine.
+This repository also contains a Python Notebook that describes how to generate data compatible with this interface, as well as how to code other useful functions for Labelbox. This Python Notebook is meant to be run in Google Colab, but could probably easily be adapted to run on a local machine. NOTE: The data referenced in this code is not available in this repository, but is available here: https://www.kaggle.com/snap/amazon-fine-food-reviews
 
 If you wish to copy this code or create a similar custom interface, I suggest cloning this code and following the tutorials linked above and the tutorials linked in the Python Notebook.
