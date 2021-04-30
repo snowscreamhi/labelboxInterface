@@ -19,3 +19,8 @@ This repository contains an exposed HTML and CSS file that Labelbox uses to show
 This repository also contains a Python Notebook that describes how to generate data compatible with this interface, as well as how to code other useful functions for Labelbox. This Python Notebook is meant to be run in Google Colab, but could probably easily be adapted to run on a local machine. NOTE: The data referenced in this code is not available in this repository, but is available here: https://www.kaggle.com/snap/amazon-fine-food-reviews
 
 If you wish to copy this code or create a similar custom interface, I suggest cloning this code and following the tutorials linked above and the tutorials linked in the Python Notebook.
+
+## General Notes for HTML interface:
+- The index.html was mostly copied from Labelbox's example custom interfaces (see the second link above). We made certain modifications with it to make it functional for our custom interface, but the code is not very clean.
+- A better understanding of HTML and CSS could help to develop a more useful pipeline for modifying/improving the custom interface.
+- The index.html occasionally uses the styles.css file to modify the look of the page. For best practice, the styles.css should be used at all times (i.e. the hard-coded styles within index.html should be removed and replaced with css styles).
